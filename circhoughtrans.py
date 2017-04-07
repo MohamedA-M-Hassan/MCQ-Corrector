@@ -15,8 +15,11 @@ def getCircles(img,minR,maxR):
 
 def getAlignmentAngle(img):
     img = cv2.medianBlur(img,5)
-    circles=getCircles(img,40,60)
+    circles=getCircles(img,30,70)
     delta_y=circles[0,1][1]-circles[0,0][1]
     delta_x=circles[0,1][0]-circles[0,0][0]
-    angle=math.atan2(delta_y,delta_x)
+    angle=math.atan2(abs(delta_y),abs(delta_x))
+    if delta_x*delta_y<0:
+      angle = -angle
+    print (delta_x,delta_y)
     return (angle*180)/math.pi
