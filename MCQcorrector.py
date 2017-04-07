@@ -12,8 +12,8 @@ for fn in os.listdir(directory):
     img = cv2.imread(name, 0)
     rotation_angle = getAlignmentAngle(img)
     rotated = rotate(img, rotation_angle)
-    # cropped = crop(rotated)
-    result = rotated
+    cropped = crop(rotated)
+    result = cropped
     cv2.imshow('result', result)
     key = cv2.waitKey(0)
     if key == ord('q'):
