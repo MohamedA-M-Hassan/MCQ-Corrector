@@ -1,9 +1,13 @@
 import cv2
 import os
 from rotate import rotate
+import numpy as np
 from circhoughtrans import getAlignmentAngle
 from crop import crop
 import csv
+from crop import vertical_crop
+from contour import contour
+
 
 model_ans =['b','c','a','a','d','a','c','c'
            ,'a','c','a','b','c','c','b','a'
@@ -23,6 +27,25 @@ for file_name in os.listdir(directory):
     rotation_angle = getAlignmentAngle(img)
     rotated = rotate(img, rotation_angle)
     cropped = crop(rotated)
+    first, second, third = vertical_crop(cropped)
+    the_list = contour(first)
+    for element in the_list:
+        cv2.circle(first, (element[0], element[1]), element[2], (192,192,192), -1)
+
+    cv2.imshow('result1', first)
+    key = cv2.waitKey(0)
+    if key == ord('q'):
+        break
+    result = second
+    cv2.imshow('result2', result)
+    key = cv2.waitKey(0)
+    if key == ord('q'):
+        break
+    result = third
+    cv2.imshow('result3', result)
+    key = cv2.waitKey(0)
+    if key == ord('q'):
+        break
     result = cropped
 
     # ans represents the choices of each student
@@ -40,4 +63,5 @@ for file_name in os.listdir(directory):
 with open('grades.csv', 'wb') as file:
     writer = csv.writer(file)
     writer.writerows(csv_data)
+
 cv2.destroyAllWindows()
