@@ -17,8 +17,8 @@ csv_data = [['FileName','Mark']]
 window = cv2.namedWindow('result',  flags=cv2.WINDOW_NORMAL)
 directory = 'dataset/test/'
 
-for fn in os.listdir(directory):
-    name = directory + fn
+for file_name in os.listdir(directory):
+    name = directory + file_name
     img = cv2.imread(name, 0)
     rotation_angle = getAlignmentAngle(img)
     rotated = rotate(img, rotation_angle)
@@ -31,15 +31,13 @@ for fn in os.listdir(directory):
     grade = sum([model_ans[indx]==ans[indx]
                  for indx in range(len(ans))])
     # Add new row to csv file data
-    csv_data.append([fn[0:-4],grade])
-
+    csv_data.append([file_name,grade])
     cv2.imshow('result', result)
     key = cv2.waitKey(0)
     if key == ord('q'):
         break
-
 # Write data to grades.csv
 with open('grades.csv', 'wb') as file:
-  writer = csv.writer(file)
-  writer.writerows(csv_data)
+    writer = csv.writer(file)
+    writer.writerows(csv_data)
 cv2.destroyAllWindows()
