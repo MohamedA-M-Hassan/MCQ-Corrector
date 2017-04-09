@@ -6,6 +6,8 @@ from crop import crop
 import csv
 from crop import vertical_crop
 from contour import contour
+from detect_ans import detect_ans
+from threshold import threshold
 
 
 model_ans =['b','c','a','a','d','a','c','c'
@@ -29,14 +31,30 @@ for file_name in os.listdir(directory):
     first, second, third = vertical_crop(cropped)
 
     contours = contour(first)
+    thresh = threshold(first)
+
+    choice = {0: 'a', 1: 'b', 2: 'c', 3: 'd'}
+    ans = []
+
+    # should be 15
+    for i in range(1):
+        contours = contours[i*4:(i+1)*4]
+        idx = detect_ans(thresh, contours)
+        ans.append(choice[idx])
+    print(ans)
+
+    # visualization
+    # mark the contours and mark the correct answer with a lighter color
+    idx = detect_ans(thresh, contours[:4])
     for element in contours:
-        cv2.circle(first, (element[0], element[1]), element[2], (192,192,192), -1)
+        cv2.circle(first, (element[0], element[1]), element[2], (90, 90, 90), 3)
+    cv2.circle(first, (contours[idx][0], contours[idx][1]), contours[idx][2], (200, 200, 200), 5)
 
     cv2.imshow('result1', first)
-    cv2.imshow('result2', second)
-    cv2.imshow('result3', third)
-    result = cropped
-    cv2.imshow('result', result)
+    # cv2.imshow('result2', second)
+    # cv2.imshow('result3', third)
+    # result = cropped
+    # cv2.imshow('result', result)
     key = cv2.waitKey(0)
     if key == ord('q'):
         break
