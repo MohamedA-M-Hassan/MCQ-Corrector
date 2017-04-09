@@ -1,7 +1,6 @@
 import cv2
 import os
 from rotate import rotate
-import numpy as np
 from circhoughtrans import getAlignmentAngle
 from crop import crop
 import csv
@@ -28,37 +27,28 @@ for file_name in os.listdir(directory):
     rotated = rotate(img, rotation_angle)
     cropped = crop(rotated)
     first, second, third = vertical_crop(cropped)
-    the_list = contour(first)
-    for element in the_list:
+
+    contours = contour(first)
+    for element in contours:
         cv2.circle(first, (element[0], element[1]), element[2], (192,192,192), -1)
 
     cv2.imshow('result1', first)
-    key = cv2.waitKey(0)
-    if key == ord('q'):
-        break
-    result = second
-    cv2.imshow('result2', result)
-    key = cv2.waitKey(0)
-    if key == ord('q'):
-        break
-    result = third
-    cv2.imshow('result3', result)
-    key = cv2.waitKey(0)
-    if key == ord('q'):
-        break
+    cv2.imshow('result2', second)
+    cv2.imshow('result3', third)
     result = cropped
-
-    # ans represents the choices of each student
-    ans= model_ans
-    # Compare the student's choices to the model answer
-    grade = sum([model_ans[indx]==ans[indx]
-                 for indx in range(len(ans))])
-    # Add new row to csv file data
-    csv_data.append([file_name,grade])
     cv2.imshow('result', result)
     key = cv2.waitKey(0)
     if key == ord('q'):
         break
+
+    # ans represents the choices of each student
+    ans = model_ans
+    # Compare the student's choices to the model answer
+    grade = sum([model_ans[indx]==ans[indx]
+                for indx in range(len(ans))])
+    # Add new row to csv file data
+    csv_data.append([file_name, grade])
+
 # Write data to grades.csv
 with open('grades.csv', 'wb') as file:
     writer = csv.writer(file)
