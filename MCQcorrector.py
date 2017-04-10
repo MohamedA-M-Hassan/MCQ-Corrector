@@ -19,7 +19,6 @@ model_ans =['b','c','a','a','d','a','c','c'
 csv_data = [['FileName','Mark']]
 window = cv2.namedWindow('result',  flags=cv2.WINDOW_NORMAL)
 directory = 'dataset/test/'
-
 for file_name in os.listdir(directory):
     name = directory + file_name
     img = cv2.imread(name, 0)
@@ -33,16 +32,19 @@ for file_name in os.listdir(directory):
     for element in spe_contours:
         cv2.circle(first_copy, (element[0], element[1]), element[2], (192, 192, 192), -1)
         # print("x: ", element[0], " --y: ", element[1], "  --rad: ", element[2])
-    print("spe_con: ", len(spe_contours))
-    """
-    for c in spe_contours:
-        print("spe: ", c[1])
-    """
     contours = contour(first_copy2)
     for element in contours:
         cv2.circle(first_copy2, (element[0], element[1]), element[2], (192, 192, 192), -1)
         cv2.putText(first_copy2, str(element[2]), (element[0], element[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 2, cv2.LINE_AA)
-    print("con: ", len(contours))
+    print("con: ", len(contours)," spe_con: ", len(spe_contours))
+
+    if len(spe_contours)!=60:
+      print('Error!!')
+
+    """
+    for c in spe_contours:
+        print("spe: ", c[1])
+    """
 
     cv2.imshow('sec_con', first_copy)
     cv2.imshow('con', first_copy2)
@@ -54,7 +56,6 @@ for file_name in os.listdir(directory):
     key = cv2.waitKey(0)
     if key == ord('q'):
         break
-
     # ans represents the choices of each student
     ans = model_ans
     # Compare the student's choices to the model answer
