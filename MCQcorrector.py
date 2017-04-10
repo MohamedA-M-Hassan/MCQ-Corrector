@@ -27,16 +27,21 @@ for file_name in os.listdir(directory):
     rotated = rotate(img, rotation_angle)
     cropped = crop(rotated)
     first, second, third = vertical_crop(cropped)
-    first_copy = first
-    first_copy2 = first
+    first_copy = first.copy()
+    first_copy2 = first.copy()
     spe_contours = specific_contours(first_copy)
     for element in spe_contours:
         cv2.circle(first_copy, (element[0], element[1]), element[2], (192, 192, 192), -1)
-        print("x: ", element[0], " --y: ", element[1], "  --rad: ", element[2])
+        # print("x: ", element[0], " --y: ", element[1], "  --rad: ", element[2])
     print("spe_con: ", len(spe_contours))
+    """
+    for c in spe_contours:
+        print("spe: ", c[1])
+    """
     contours = contour(first_copy2)
     for element in contours:
         cv2.circle(first_copy2, (element[0], element[1]), element[2], (192, 192, 192), -1)
+        cv2.putText(first_copy2, str(element[2]), (element[0], element[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 2, cv2.LINE_AA)
     print("con: ", len(contours))
 
     cv2.imshow('sec_con', first_copy)

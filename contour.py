@@ -39,6 +39,7 @@ def contour(img):
 
 def specific_contours(img):
     detected_contours_list = contour(img)
+    detected_contours_list = sorted(detected_contours_list, key=lambda l: l[1], reverse=True)
     actual_contours = []
     y_flag = 0
     for row in detected_contours_list:
@@ -47,13 +48,14 @@ def specific_contours(img):
         y_first = row[1]
         rad = row[2]
         # if rad out of our range 10=< rad =< 12 then: don't care (faks y3ny)
-        if rad >12 and rad < 10:
+        if rad >15 and rad < 9:
             continue
 
         if y_flag <= (y_first+5) and y_flag >= (y_first-5):
             continue
-
+        #print(y_flag , y_first)
         rad = 11
+
         if x_first <= 158 and x_first >= 150:
             actual_contours.append([x_first, y_first, rad])
             actual_contours.append([x_first - 41, y_first, rad])
@@ -72,7 +74,7 @@ def specific_contours(img):
         elif x_first <= 36 and x_first >= 28:
             actual_contours.append([x_first + (3*41), y_first, rad])
             actual_contours.append([x_first + (2*41), y_first, rad])
-            actual_contours.append([x_first - 41, y_first, rad])
+            actual_contours.append([x_first + 41, y_first, rad])
             actual_contours.append([x_first, y_first, rad])
         y_flag = y_first
     return actual_contours
