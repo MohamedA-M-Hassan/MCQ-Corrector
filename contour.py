@@ -100,6 +100,7 @@ def specific_contours(img):
 
       for i in range(15):
         if not found_y[i]:
+          rad = 11
           actual_contours.append([actual_contours[0][0], avg_y[i], rad])
           actual_contours.append([actual_contours[1][0], avg_y[i], rad])
           actual_contours.append([actual_contours[2][0], avg_y[i], rad])
