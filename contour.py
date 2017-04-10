@@ -48,7 +48,7 @@ def specific_contours(img):
         y_first = row[1]
         rad = row[2]
         # if rad out of our range 10=< rad =< 12 then: don't care (faks y3ny)
-        if rad >15 and rad < 9:
+        if rad >15 or rad < 9:
             continue
 
         if y_flag <= (y_first+5) and y_flag >= (y_first-5):
