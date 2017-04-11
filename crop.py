@@ -10,5 +10,5 @@ def vertical_crop(img):
     img1 = img[:, 0:175]
     img2 = img[:, 340:510]
     img3 = img[:, 670:]
-    return img1, img2, img3
+    return [img1, img2, img3]
 

@@ -105,4 +105,4 @@ def specific_contours(img):
           actual_contours.append([actual_contours[1][0], avg_y[i], rad])
           actual_contours.append([actual_contours[2][0], avg_y[i], rad])
           actual_contours.append([actual_contours[3][0], avg_y[i], rad])
-    return actual_contours
+    return sorted(actual_contours, key=lambda l: l[1])
