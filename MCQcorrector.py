@@ -9,6 +9,7 @@ from crop import vertical_crop
 from contour import specific_contours,contour
 from detect_ans import detect_ans
 from threshold import threshold
+import re
 
 model_ans =['b','c','a','a','d','a','c','c'
            ,'a','c','a','b','c','c','b','a'
@@ -22,7 +23,16 @@ csv_data = [['FileName','Mark']]
 # window = cv2.namedWindow('result',  flags=cv2.WINDOW_NORMAL)
 directory = 'dataset/test/'
 
-for file_name in os.listdir(directory):
+def sort_humanly( l ):
+  """ Sort the given list in the way that humans expect.
+  """
+  convert = lambda text: int(text) if text.isdigit() else text
+  alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
+  l.sort( key=alphanum_key )
+  return l
+files = sort_humanly(os.listdir(directory))
+
+for file_name in files:
     name = directory + file_name
     img = cv2.imread(name, 0)
     rotation_angle = getAlignmentAngle(img)
@@ -47,12 +57,16 @@ for file_name in os.listdir(directory):
                 cv2.circle(column, (contours[i*4+idx][0], contours[i*4+idx][1]), contours[i*4+idx][2], 200, 5)
 
     # print(ans)
-
+    '''
     cv2.imshow('result1', vertical_crops[0])
     cv2.imshow('result2', vertical_crops[1])
     cv2.imshow('result3', vertical_crops[2])
     # result = cropped
     # cv2.imshow('result', result)
+    """
+    for c in spe_contours:
+        print("spe: ", c[1])
+    """
 
     key = cv2.waitKey(0)
     if key == ord('q'):
@@ -60,8 +74,10 @@ for file_name in os.listdir(directory):
     # ans represents the choices of each student
     # ans = model_ans
     # Compare the student's choices to the model answer
+    '''
     grade = sum([model_ans[index]==ans[index]
                 for index in range(len(ans))])
+    print(file_name,' ',grade)
     # Add new row to csv file data
     csv_data.append([file_name, grade])
 
